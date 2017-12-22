@@ -8,6 +8,7 @@
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="javascript" type="text/javascript" href="assets/java/javascripts">
 
 </head>
 
@@ -19,16 +20,42 @@
 
     <!-- Jumbotron -->
     <div class="jumbotron">
-      <h1 class="text-center">Sign-Up Today!</h1>
+      <h1 class="text-center">The Swag Train Has No Brakes!</h1>
     </div>
 
     <div class="row">
 
-      <!-- Sign-Up Panel-->
-      <div class="col-lg-6">
+      <!-- <div class="row"> -->
+      <div class="col-lg-12">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">New Member Sign-Up</h3>
+            <h3 class="panel-title">Current Train Schedule</h3>
+          </div>
+          <div class="panel-body" id="all-members">
+          </div>
+        </div>
+      </div>
+    <!-- </div> -->
+
+    <!-- <div class="col-lg-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Add Train</h3>
+              </div>
+              <div class="panel-body" id="recent-member">
+                <h2 id="name-display">Jimmy John</h2>
+                <h4 id="destination-display">Destination: jimmy@john.edu</h4>
+                <h4 id="Time-display">Time: 27</h4>
+                <p id="frequency-display">I'm signing up, because I want to spread sandwiches to the world.</p>
+              </div>
+            </div>
+          </div> -->
+
+      <!-- Sign-Up Panel-->
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Add Train</h3>
           </div>
           <div class="panel-body">
 
@@ -39,16 +66,16 @@
                 <input class="form-control" id="name-input" type="text">
               </div>
               <div class="form-group">
-                <label for="email-input">Email:</label>
-                <input class="form-control" id="email-input" type="email">
+                <label for="destination-input">Destination:</label>
+                <input class="form-control" id="destination-input" type="destination">
               </div>
               <div class="form-group">
-                <label for="age-input">Age:</label>
-                <input class="form-control" id="age-input" type="number">
+                <label for="time-input">First Train Time (HH:mm - Military Time):s</label>
+                <input class="form-control" id="time-input" type="number">
               </div>
               <div class="form-group">
-                <label for="comment-input">How did you hear about us?</label>
-                <textarea class="form-control" id="comment-input" rows="5"></textarea>
+                <label for="frequency-input">Frequency (min):</label>
+                <textarea class="form-control" id="frequency-input" rows="5"></textarea>
               </div>
               <button class="btn btn-default" id="add-user" type="submit">Submit</button>
             </form>
@@ -57,114 +84,22 @@
       </div>
 
       <!-- Most Recent Member Panel -->
-      <div class="col-lg-6">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">Most Recent Member</h3>
-          </div>
-          <div class="panel-body" id="recent-member">
-            <h2 id="name-display">Jimmy John</h2>
-            <h4 id="email-display">Email: jimmy@john.edu</h4>
-            <h4 id="age-display">Age: 27</h4>
-            <p id="comment-display">I'm signing up, because I want to spread sandwiches to the world.</p>
-          </div>
-        </div>
-      </div>
 
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">Most Recent Member</h3>
-          </div>
-          <div class="panel-body" id="all-members">
-          </div>
-        </div>
-      </div>
     </div>
 
   </div>
 
+  
+
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 
   <!-- JavaScript -->
   <script>
 
     // Capture Button Click
-    $("#add-user").on("click", function(event) {
-      // prevent page from refreshing when form tries to submit itself
-      event.preventDefault();
-
-      // Capture user inputs and store them into variables
-      var name = $("#name-input").val().trim();
-      var email = $("#email-input").val().trim();
-      var age = $("#age-input").val().trim();
-      var comment = $("#comment-input").val().trim();
-
-      // Console log each of the user inputs to confirm we are receiving them
-      console.log(name);
-      console.log(email);
-      console.log(age);
-      console.log(comment);
-
-      // Replaces the content in the "recent-member" div with the new info
-      $("#name-display").text(name);
-      $("#email-display").text(email);
-      $("#age-display").text(age);
-      $("#comment-display").text(comment);
-
-      var profiles = JSON.parse(localStorage.getItem("profiles"));
-
-      if(profiles == null){
-        profiles = [];
-      }
-
-      var newProfile = {
-        name: name,
-        email: email,
-        age: age,
-        comment: comment
-      };
-
-      profiles.push(newProfile);
-
-      // Store all content into localStorage
-      localStorage.setItem("profiles", JSON.stringify(profiles));
-
-      updatePage();
-    });
-
-    updatePage();
-
-    function updatePage(){
-      var profiles = JSON.parse(localStorage.getItem("profiles"));
-
-      if(profiles == null){
-        profiles = [];
-      }
-
-      $("#all-members").empty();
-
-      for (var i = 0; i < profiles.length; i++) {
-        var newMember = $("<div>");
-        newMember.append("Name: " + profiles[i].name);
-        newMember.append("Email: " + profiles[i].email);
-        newMember.append("Age: " + profiles[i].age);
-        newMember.append("Comment: " + profiles[i].comment);
-
-        $("#all-members").append(newMember);
-      }
-
-      var lastObject = profiles[profiles.length - 1];
-
-       // By default display the content from localStorage
-      $("#name-display").text(lastObject.name);
-      $("#email-display").text(lastObject.email);
-      $("#age-display").text(lastObject.age);
-      $("#comment-display").text(lastObject.comment);
-    }
+    
   </script>
 
 </body>
@@ -172,7 +107,7 @@
 </html>
 
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 
 <html lang="en-us">
 
@@ -180,33 +115,33 @@
 
   <meta charset="UTF-8">
 
-  <title>Example of Time Telling</title>
+  <title>Example of Time Telling</title> -->
 
   <!-- Added Moment JS -->
-  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 
 </head>
 
-<body>
+<body> -->
 
   <!-- Script -->
 
-  <script>
-    // Assume the following situations.
+  <!-- <script> -->
+   <!--  // Assume the following situations.
 
     // (TEST 1)
     // First Train of the Day is 3:00 AM
     // Assume Train comes every 3 minutes.
     // Assume the current time is 3:16 AM....
     // What time would the next train be...? (Use your brain first)
-    // It would be 3:18 -- 2 minutes away
+    // It would be 3:18 - 2 minutes away
 
     // (TEST 2)
     // First Train of the Day is 3:00 AM
     // Assume Train comes every 7 minutes.
     // Assume the current time is 3:16 AM....
     // What time would the next train be...? (Use your brain first)
-    // It would be 3:21 -- 5 minutes away
+    // It would be 3:21 - 5 minutes away
 
 
     // ==========================================================
@@ -253,9 +188,9 @@
 
     // Next Train
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-    console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
-  </script>
+    console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm")); -->
+  <!-- </script> -->
 
-</body>
+<!-- </body>
 
-</html>
+</html> -->
